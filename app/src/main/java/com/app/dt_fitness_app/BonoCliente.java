@@ -19,4 +19,5 @@ public class BonoCliente extends AppCompatActivity {
         startActivity(new Intent(BonoCliente.this,CerrarSesion.class));
     }
     //Hola esto es una prueba
+    //prueba 2
 }
