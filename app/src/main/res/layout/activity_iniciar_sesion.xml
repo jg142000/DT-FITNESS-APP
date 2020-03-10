@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:orientation="vertical"
+    tools:context=".IniciarSesion">
+
+
+
+
+    <EditText
+        android:id="@+id/correo_sign"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Correo"
+        android:inputType="textEmailAddress"/>
+
+    <EditText
+        android:id="@+id/contraseña_sign"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Contraseña"
+        android:inputType="textPassword"/>
+
+
+    <Button
+        android:id="@+id/iniciarSesionButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Iniciar sesión"
+        android:onClick="iniciarSesion"/>
+    <Button
+        android:id="@+id/registro_inicio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Crear cuenta"
+        android:onClick="goToRegistro"/>
+
+    <RadioButton
+        android:id="@+id/mantener_sesion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbarSize="4dp"
+        android:text="Mantener sesión iniciada"
+        android:textSize="18sp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="316dp"
+        android:src="@drawable/dt_logo" />
+
+
+
+</LinearLayout>

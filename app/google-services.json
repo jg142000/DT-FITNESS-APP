@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "859854822672",
+    "firebase_url": "https://dt-fitness-bonos.firebaseio.com",
+    "project_id": "dt-fitness-bonos",
+    "storage_bucket": "dt-fitness-bonos.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:859854822672:android:84c62ce7a03ffd314f9995",
+        "android_client_info": {
+          "package_name": "com.app.dt_fitness_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "859854822672-6bc9fbo9l9bb62fhib0ls4uj3rjluj2t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.dt_fitness_app",
+            "certificate_hash": "887eab05cd15286096d4d5297aa2329f0c312979"
+          }
+        },
+        {
+          "client_id": "859854822672-vfhh1mmu8semftfid73776afakehnqng.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNVPQ7B_bJdzKhja1ALw2ZTJp4mpwbmsA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "859854822672-vfhh1mmu8semftfid73776afakehnqng.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
