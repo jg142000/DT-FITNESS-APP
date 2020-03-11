@@ -2,6 +2,8 @@ package com.app.dt_fitness_app;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.app.dt_fitness_app.ui.ValidadorDNI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -70,9 +73,13 @@ public class MainActivity extends AppCompatActivity {
         String correo = editCorreo.getText().toString();
         String contraseña = editContraseña.getText().toString();
 
+        Boolean dni_correcto = new ValidadorDNI(dni).validar();
+        Boolean correo_valido = correo_valido(correo);
+        Boolean contra_correcta = contra_correcta(contraseña);
+        Boolean telefono_valido = tlf_valido(telefono);
         Cliente cliente = new Cliente(nombre, contraseña, telefono, dni, correo, direccion, bono);
         if (!nombre.isEmpty() && !dni.isEmpty() && !telefono.isEmpty() && !direccion.isEmpty() &&
-                !bono.isEmpty() && !correo.isEmpty() && !contraseña.isEmpty()) {
+                !bono.isEmpty() && !correo.isEmpty() && !contraseña.isEmpty() && dni_correcto && correo_valido && contra_correcta && telefono_valido) {
             registrarCliente_(correo, contraseña);
 
             db.collection("Clientes").document(nombre).set(cliente)
@@ -90,7 +97,20 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
 
-        } else {
+        }
+        else if(!dni_correcto){
+            Toast.makeText(this, "El dni no tiene el formato correcto", Toast.LENGTH_SHORT).show();
+        }
+        else if(!correo_valido){
+            Toast.makeText(this, "El correo no tiene el formato correcto", Toast.LENGTH_SHORT).show();
+        }
+        else if(!contra_correcta){
+            Toast.makeText(this, "La contraseña debe de tener más de 5 caracteres", Toast.LENGTH_SHORT).show();
+        }
+        else if(!telefono_valido){
+            Toast.makeText(this, "El teléfono introducido es incorrecto", Toast.LENGTH_SHORT).show();
+        }
+        else {
             Toast.makeText(this, "Rellena todos los campos", Toast.LENGTH_SHORT).show();
         }
     }
@@ -118,5 +138,21 @@ public class MainActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
     }
+
+    private boolean contra_correcta(String contra){
+        return contra.length()>5;
+    }
+    private boolean tlf_valido(String telefono){
+        return telefono.length()>=9;
+    }
+
+    private boolean correo_valido(String correo){
+        Pattern pattern = Pattern
+                .compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                        + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+        Matcher mather = pattern.matcher(correo);
+        return mather.find();
+    }
+
 
 }
