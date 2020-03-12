@@ -125,7 +125,7 @@ public class IniciarSesion extends AppCompatActivity  {
                     }
                     else if (task.isSuccessful() && isDani(correo2)){
                         Log.d(TAG, "Has entrado en modo administrador");
-                        startActivity(new Intent(IniciarSesion.this,Lista_Clientes.class));
+                        startActivity(new Intent(IniciarSesion.this,CerrarSesion.class));
                         guardarEstadomanSesion();
                         finish();
 
