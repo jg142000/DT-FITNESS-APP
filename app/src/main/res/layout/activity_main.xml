@@ -1,71 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:padding="16dp"
-    android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity" >
+    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingLeft="16dp"
+    android:orientation="vertical"
+    android:paddingRight="16dp"
+    tools:context=".MainActivity">
 
+    <TextView
+        android:id="@+id/crea"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="50dp"
+        android:hint="Crea tu perfil:"
+        android:textSize="18sp" />
 
     <EditText
         android:id="@+id/Nombre"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="90dp"
         android:hint="Nombre"
-        android:inputType="text"/>
+        android:inputType="text" />
+
     <EditText
         android:id="@+id/Contraseña"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/Nombre"
+        android:layout_marginTop="50dp"
         android:hint="Contraseña"
-        android:inputType="textPassword"/>
+        android:inputType="textPassword" />
     <EditText
         android:id="@+id/Telefono"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/Contraseña"
+        android:layout_marginTop="50dp"
         android:hint="Telefono"
         android:inputType="phone"/>
     <EditText
         android:id="@+id/DNI"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="DNI"
-        android:inputType="text"/>
+        android:layout_alignTop="@+id/Telefono"
+        android:layout_marginTop="50dp"
+        android:hint="NIF o NIE"
+        android:inputType="text" />
     <EditText
         android:id="@+id/Correo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/DNI"
+        android:layout_marginTop="50dp"
         android:hint="Correo"
         android:inputType="textEmailAddress"/>
     <EditText
         android:id="@+id/Direccion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/Correo"
+        android:layout_marginTop="50dp"
         android:hint="Direccion"
         android:inputType="textPostalAddress"/>
+
     <EditText
         android:id="@+id/Bono"
-        android:layout_width="match_parent"
+        android:layout_width="379dp"
         android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/Direccion"
+        android:layout_marginTop="50dp"
         android:hint="Bono"
-        android:inputType="number"/>
+        android:inputType="number" />
 
     <Button
-        android:layout_width="match_parent"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
+        android:layout_alignRight="@id/crea"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginTop="40dp"
         android:text="Registrarse"
         android:onClick="guardarCliente"/>
     <Button
         android:id="@+id/relogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/Bono"
+        android:layout_marginTop="50dp"
         android:text="Ya tengo cuenta"
         android:onClick="reLogin"/>
 
 
-
-
-
-</LinearLayout>
+</RelativeLayout>
