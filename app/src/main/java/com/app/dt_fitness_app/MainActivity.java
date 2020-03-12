@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.app.dt_fitness_app.ui.ValidadorDNI;
+import com.app.dt_fitness_app.ui.ValidadorNIE;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -74,12 +75,13 @@ public class MainActivity extends AppCompatActivity {
         String contraseña = editContraseña.getText().toString();
 
         Boolean dni_correcto = new ValidadorDNI(dni).validar();
+        Boolean nif_correcto = new ValidadorNIE().validarNIE(dni);
         Boolean correo_valido = correo_valido(correo);
         Boolean contra_correcta = contra_correcta(contraseña);
         Boolean telefono_valido = tlf_valido(telefono);
         Cliente cliente = new Cliente(nombre, contraseña, telefono, dni, correo, direccion, bono);
         if (!nombre.isEmpty() && !dni.isEmpty() && !telefono.isEmpty() && !direccion.isEmpty() &&
-                !bono.isEmpty() && !correo.isEmpty() && !contraseña.isEmpty() && dni_correcto && correo_valido && contra_correcta && telefono_valido) {
+                !bono.isEmpty() && !correo.isEmpty() && !contraseña.isEmpty() && (dni_correcto || nif_correcto) && correo_valido && contra_correcta && telefono_valido) {
             registrarCliente_(correo, contraseña);
 
             db.collection("Clientes").document(nombre).set(cliente)
