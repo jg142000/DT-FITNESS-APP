@@ -117,7 +117,7 @@ public class IniciarSesion extends AppCompatActivity  {
                     String correo2 = mcorreo.getText().toString();
                     if (task.isSuccessful() && !isDani(correo2)){
                         Log.d(TAG, "Inicio sesión: correcto ");
-                        startActivity(new Intent(IniciarSesion.this,CerrarSesion.class));
+                        startActivity(new Intent(IniciarSesion.this,ListaClientes.class));
                         guardarEstadomanSesion();
                         Toast.makeText(IniciarSesion.this, "Has iniciado sesión como "+ imprimirUser(IniciarSesion.this), Toast.LENGTH_LONG).show(); // Pruebaaaa!!!
                         finish();
