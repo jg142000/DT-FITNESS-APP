@@ -10,7 +10,7 @@
 
     <TextView
         android:id="@+id/crea"
-        android:layout_width="match_parent"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginTop="50dp"
@@ -77,14 +77,16 @@
         android:inputType="number" />
 
     <Button
-        android:layout_width="120dp"
+        android:id="@+id/registrarse"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignRight="@id/crea"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="25dp"
+        android:layout_marginLeft="40dp"
         android:layout_marginTop="40dp"
-        android:text="Registrarse"
-        android:onClick="guardarCliente"/>
+        android:layout_marginRight="-159dp"
+        android:onClick="guardarCliente"
+        android:text="Registrarse" />
+
     <Button
         android:id="@+id/relogin"
         android:layout_width="match_parent"
@@ -93,6 +95,24 @@
         android:layout_marginTop="50dp"
         android:text="Ya tengo cuenta"
         android:onClick="reLogin"/>
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignRight="@+id/registrarse"
+        android:layout_alignTop="@+id/Correo"
+        android:layout_marginRight="-34dp"
+        android:layout_marginTop="-254dp"
+        android:src="@drawable/brazo_derecho" />
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignLeft="@+id/registrarse"
+        android:layout_alignTop="@+id/Correo"
+        android:layout_marginLeft="-34dp"
+        android:layout_marginTop="-254dp"
+        android:src="@drawable/brazo_izquierdo" />
 
 
 </RelativeLayout>
