@@ -19,16 +19,18 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class IniciarSesion extends AppCompatActivity  {
 
     private static EditText mcorreo;
     private EditText mcontraseña;
 
-    private String correoAdmin = "daniel@gmail.com";
-
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private Button iniciar;
     private Button botonRegistro;
+    private String correoAdmin = "dtfitnessmadrid@gmail.com";
 
     private FirebaseAuth fa;
 
@@ -52,7 +54,6 @@ public class IniciarSesion extends AppCompatActivity  {
             startActivity(new Intent(IniciarSesion.this,AdminPage.class));
             finish();
         }
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_iniciar_sesion);
         fa = FirebaseAuth.getInstance();
@@ -105,7 +106,7 @@ public class IniciarSesion extends AppCompatActivity  {
     }
 
     public void iniciarSesion(View v){
-        String correo = mcorreo.getText().toString();
+        final String correo = mcorreo.getText().toString();
         String contraseña = mcontraseña.getText().toString();
         Button b = findViewById(R.id.iniciarSesionButton);
         b.setEnabled(false);
@@ -114,20 +115,21 @@ public class IniciarSesion extends AppCompatActivity  {
             fa.signInWithEmailAndPassword(correo, contraseña).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
-                    String correo2 = mcorreo.getText().toString();
-                    if (task.isSuccessful() && !isDani(correo2)){
-                        Log.d(TAG, "Inicio sesión: correcto ");
-                        startActivity(new Intent(IniciarSesion.this,ListaClientes.class));
-                        guardarEstadomanSesion();
-                        Toast.makeText(IniciarSesion.this, "Has iniciado sesión como "+ imprimirUser(IniciarSesion.this), Toast.LENGTH_LONG).show(); // Pruebaaaa!!!
-                        finish();
+                    if (task.isSuccessful())   {
 
-                    }
-                    else if (task.isSuccessful() && isDani(correo2)){
-                        Log.d(TAG, "Has entrado en modo administrador");
-                        startActivity(new Intent(IniciarSesion.this,CerrarSesion.class));
-                        guardarEstadomanSesion();
-                        finish();
+                        if (isDani(correo)) {
+                            Log.d(TAG, "Inicio sesión: correcto Daniel ");
+                            startActivity(new Intent(IniciarSesion.this, AdminPage.class));
+                            guardarEstadomanSesion();
+                            finish();
+                        }
+                        else {
+                            Log.d(TAG, "Inicio sesión: correcto ");
+                            startActivity(new Intent(IniciarSesion.this, BonoCliente.class));
+                            guardarEstadomanSesion();
+                            Toast.makeText(IniciarSesion.this, "Has iniciado sesión como " + imprimirUser(IniciarSesion.this), Toast.LENGTH_LONG).show(); // Pruebaaaa!!!
+                            finish();
+                        }
 
                     }
                     else {
@@ -155,8 +157,9 @@ public class IniciarSesion extends AppCompatActivity  {
         startActivity(intent);
     }
 
-
     private boolean isDani(String correo){
         return correo.equals(correoAdmin);
     }
+
+
 }

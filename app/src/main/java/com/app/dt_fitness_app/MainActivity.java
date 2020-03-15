@@ -100,21 +100,28 @@ public class MainActivity extends AppCompatActivity {
                     });
 
         }
-        else if(!dni_correcto){
-            Toast.makeText(this, "El dni no tiene el formato correcto", Toast.LENGTH_SHORT).show();
-        }
-        else if(!correo_valido){
-            Toast.makeText(this, "El correo no tiene el formato correcto", Toast.LENGTH_SHORT).show();
-        }
-        else if(!contra_correcta){
-            Toast.makeText(this, "La contraseña debe de tener más de 5 caracteres", Toast.LENGTH_SHORT).show();
-        }
-        else if(!telefono_valido){
-            Toast.makeText(this, "El teléfono introducido es incorrecto", Toast.LENGTH_SHORT).show();
-        }
-        else {
+        else if (alguno_vacío(nombre,contraseña,telefono,dni,correo,direccion,bono)) {
             Toast.makeText(this, "Rellena todos los campos", Toast.LENGTH_SHORT).show();
         }
+        else {
+
+            if(!contra_correcta){
+                Toast.makeText(this, "La contraseña debe de tener más de 5 caracteres", Toast.LENGTH_SHORT).show();
+            }
+            else if(!telefono_valido){
+                Toast.makeText(this, "El teléfono introducido es incorrecto", Toast.LENGTH_SHORT).show();
+            }
+            else if(!dni_correcto){
+                Toast.makeText(this, "El dni no tiene el formato correcto", Toast.LENGTH_SHORT).show();
+            }
+            else if(!correo_valido){
+                Toast.makeText(this, "El correo no tiene el formato correcto", Toast.LENGTH_SHORT).show();
+            }
+
+
+
+        }
+
     }
 
 
@@ -154,6 +161,10 @@ public class MainActivity extends AppCompatActivity {
                         + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
         Matcher mather = pattern.matcher(correo);
         return mather.find();
+    }
+    private boolean alguno_vacío (String nombre, String correo, String contra, String dni, String telefono,String direccion, String bono){
+        return nombre.isEmpty() || correo.isEmpty() || contra.isEmpty() || dni.isEmpty() || telefono.isEmpty() || direccion.isEmpty() || bono.isEmpty();
+
     }
 
 
