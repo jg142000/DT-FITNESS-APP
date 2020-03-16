@@ -8,9 +8,6 @@
     android:orientation="vertical"
     tools:context=".IniciarSesion">
 
-
-
-
     <EditText
         android:id="@+id/correo_sign"
         android:layout_width="match_parent"

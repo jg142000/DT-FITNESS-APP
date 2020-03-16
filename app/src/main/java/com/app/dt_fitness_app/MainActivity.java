@@ -82,7 +82,8 @@ public class MainActivity extends AppCompatActivity {
         Cliente cliente = new Cliente(nombre, contraseña, telefono, dni, correo, direccion, bono);
         if (!nombre.isEmpty() && !dni.isEmpty() && !telefono.isEmpty() && !direccion.isEmpty() &&
                 !bono.isEmpty() && !correo.isEmpty() && !contraseña.isEmpty() && (dni_correcto || nif_correcto) && correo_valido && contra_correcta && telefono_valido) {
-            registrarCliente_(correo, contraseña);
+
+
 
             db.collection("Clientes").document(correo).set(cliente)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -98,6 +99,8 @@ public class MainActivity extends AppCompatActivity {
                             Log.d(TAG, e.toString());
                         }
                     });
+
+            registrarCliente_(correo, contraseña);
 
         }
         else if (alguno_vacío(nombre,contraseña,telefono,dni,correo,direccion,bono)) {
