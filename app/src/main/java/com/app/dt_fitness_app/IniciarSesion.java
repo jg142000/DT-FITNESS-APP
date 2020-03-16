@@ -125,7 +125,7 @@ public class IniciarSesion extends AppCompatActivity  {
                         }
                         else {
                             Log.d(TAG, "Inicio sesión: correcto ");
-                            startActivity(new Intent(IniciarSesion.this, BonoCliente.class));
+                            startActivity(new Intent(IniciarSesion.this, info_user.class));
                             guardarEstadomanSesion();
                             Toast.makeText(IniciarSesion.this, "Has iniciado sesión como " + imprimirUser(IniciarSesion.this), Toast.LENGTH_LONG).show(); // Pruebaaaa!!!
                             finish();

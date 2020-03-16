@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
                 !bono.isEmpty() && !correo.isEmpty() && !contraseña.isEmpty() && (dni_correcto || nif_correcto) && correo_valido && contra_correcta && telefono_valido) {
             registrarCliente_(correo, contraseña);
 
-            db.collection("Clientes").document(nombre).set(cliente)
+            db.collection("Clientes").document(correo).set(cliente)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {

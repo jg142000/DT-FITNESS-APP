@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
@@ -34,7 +36,12 @@ public class AdminPage extends AppCompatActivity {
     private CollectionReference clienteReferencia = db.collection("Clientes");
     private Clientes_adapter adapter;
     private static final String TAG = "DocSnippets";
-    private TextView texto_prueba;
+    private static final String STRING_PREFERENCE =  "com.app.dt_fitness_app";
+    private static final String CARD_USER = "user";  // Usuario al que accedemos
+    private static String correo_card;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,8 +49,9 @@ public class AdminPage extends AppCompatActivity {
         setUpRecylerView();
     }
 
+
     private void setUpRecylerView() {
-        Query query = clienteReferencia.orderBy("nombre",Query.Direction.ASCENDING);
+        Query query = clienteReferencia.orderBy("nombre",Query.Direction.DESCENDING);
         FirestoreRecyclerOptions<Cliente> options = new FirestoreRecyclerOptions.Builder<Cliente>()
                 .setQuery(query,Cliente.class)
                 .build();
@@ -56,6 +64,10 @@ public class AdminPage extends AppCompatActivity {
         adapter.setOnItemClickListener(new Clientes_adapter.OnItemClickListener() {
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot) {
+
+                SharedPreferences preferences = getSharedPreferences(STRING_PREFERENCE, MODE_PRIVATE);
+                preferences.edit().putString(CARD_USER,documentSnapshot.getString("correo")).apply();
+                correo_card = documentSnapshot.getString("correo");
                 startActivity(new Intent (AdminPage.this,info_user.class));
 
             }
@@ -76,6 +88,11 @@ public class AdminPage extends AppCompatActivity {
         adapter.startListening();
     }
 
+
+    public static String imprimirUser(Context c){
+        SharedPreferences preferences = c.getSharedPreferences(STRING_PREFERENCE, MODE_PRIVATE);
+        return preferences.getString(CARD_USER, correo_card);
+    }
 
 
 }

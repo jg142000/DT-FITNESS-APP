@@ -4,15 +4,162 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="@dimen/activity_vertical_margin"
     tools:context=".info_user">
 
     <TextView
-        android:layout_width="250dp"
-        android:layout_height="50dp"
-        android:textSize="25dp"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:hint="Esto es una prueba"></TextView>
+        android:id="@+id/mi_info_nombre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nombre"
+        android:maxLines="1"
+        android:padding="@dimen/activity_vertical_margin"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+
+        />
+
+    <TextView
+        android:id="@+id/mi_info_correo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/mi_info_nombre"
+        android:text="correo "
+        android:maxLines="1"
+        android:padding="@dimen/activity_vertical_margin"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        />
+
+    <TextView
+        android:id="@+id/mi_info_dni"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/mi_info_correo"
+        android:text="dni "
+        android:maxLines="1"
+        android:padding="@dimen/activity_vertical_margin"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        />
+    <TextView
+        android:id="@+id/mi_info_direccion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/mi_info_dni"
+        android:text="direccion"
+        android:maxLines="1"
+        android:padding="@dimen/activity_vertical_margin"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        />
+
+
+
+    <TextView
+        android:id="@+id/mi_info_telefono"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/mi_info_direccion"
+        android:text="telefono"
+        android:maxLines="1"
+        android:padding="@dimen/activity_vertical_margin"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        />
+
+    <TextView
+        android:id="@+id/mi_info_contraseña"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/mi_info_telefono"
+        android:text="contraseña"
+        android:maxLines="1"
+        android:padding="@dimen/activity_vertical_margin"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        />
+
+    <TextView
+        android:id="@+id/mi_info_bono"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/mi_info_contraseña"
+        android:text="mi bono"
+        android:maxLines="1"
+        android:padding="@dimen/activity_vertical_margin"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+
+        />
+
+    <Button
+        android:id="@+id/edit_nombre"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignRight="@id/mi_info_nombre"
+         android:drawableBottom="@android:drawable/ic_menu_edit"
+         android:backgroundTint="#FFFFFF"
+        />
+
+    <Button
+        android:id="@+id/edit_correo"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignRight="@id/mi_info_correo"
+        android:layout_below="@id/edit_nombre"
+         android:drawableBottom="@android:drawable/ic_menu_edit"
+         android:backgroundTint="#FFFFFF"
+        />
+
+    <Button
+        android:id="@+id/edit_dni"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignRight="@id/mi_info_dni"
+        android:layout_below="@id/edit_correo"
+         android:drawableBottom="@android:drawable/ic_menu_edit"
+         android:backgroundTint="#FFFFFF"
+
+        />
+
+    <Button
+        android:id="@+id/edit_direccion"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignRight="@id/mi_info_direccion"
+        android:layout_below="@id/edit_dni"
+        android:drawableBottom="@android:drawable/ic_menu_edit"
+        android:backgroundTint="#FFFFFF"
+
+        />
+
+    <Button
+        android:id="@+id/edit_telefono"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignRight="@id/mi_info_telefono"
+        android:layout_below="@id/edit_direccion"
+        android:drawableBottom="@android:drawable/ic_menu_edit"
+        android:backgroundTint="#FFFFFF"
+
+        />
+
+
+    <Button
+        android:id="@+id/edit_contraseña"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignRight="@id/mi_info_contraseña"
+        android:layout_below="@id/edit_telefono"
+        android:drawableBottom="@android:drawable/ic_menu_edit"
+        android:backgroundTint="#FFFFFF"
+
+        />
+
+    <Button
+        android:id="@+id/edit_bono"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignRight="@id/mi_info_bono"
+        android:layout_below="@id/edit_contraseña"
+        android:drawableBottom="@android:drawable/ic_menu_edit"
+        android:backgroundTint="#FFFFFF"
+
+        />
 
 
 </RelativeLayout>
