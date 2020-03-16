@@ -27,14 +27,15 @@ import java.util.Map;
 public class AdminPage extends AppCompatActivity {
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private DocumentReference prueba = db.document("Clientes/Daniel Torvisco Oto");
+    private CollectionReference clienteReferencia = db.collection("Clientes");
+    private Clientes_adapter adapter;
     private static final String TAG = "DocSnippets";
     private TextView texto_prueba;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_page);
-        texto_prueba = findViewById(R.id.textoPrueba);
+
     }
 
     /*public void AdminPages() {
