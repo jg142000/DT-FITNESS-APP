@@ -5,42 +5,59 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class AdminPage extends AppCompatActivity {
 
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private DocumentReference prueba = db.document("Clientes/Daniel Torvisco Oto");
     private static final String TAG = "DocSnippets";
-
+    private TextView texto_prueba;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_page);
-        new AdminPage();
+        texto_prueba = findViewById(R.id.textoPrueba);
     }
 
-    public void AdminPages(){
-        CollectionReference dani = db.collection("Clientes");
-        Query consulta = dani.whereEqualTo("Daniel Torvisco Oto","correo");
-        db.collection("Clientes").whereEqualTo("correo",true).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+    /*public void AdminPages() {
+        prueba.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful()){
-                    for(QueryDocumentSnapshot document :task.getResult()){
-                        Log.d(TAG, document.getId()+ " => " +document.getData());
-                    }
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if(documentSnapshot.exists()){
+                   String dani = documentSnapshot.getString("correo");
+                   texto_prueba.setText("El correo es" +dani);
                 }
-                else {
-                    Log.d(TAG,"ERROOOOOOR CHINOS TOSIENDO", task.getException());
+                else{
+                    Toast.makeText(AdminPage.this, "El documento no existe", Toast.LENGTH_SHORT).show();
                 }
-          }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(AdminPage.this, "Error", Toast.LENGTH_SHORT).show();
+                Log.d(TAG,e.toString());
+            }
         });
     }
+    */
+
+
 }
