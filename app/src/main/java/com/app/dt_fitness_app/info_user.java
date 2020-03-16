@@ -74,6 +74,7 @@ public class info_user extends AppCompatActivity {
             infoDNI.setText(dni);
             infoDireccion.setText(direccion);
             infoContraseña.setText(contraseña);
+            infoTelefono.setText(telefono);
             infoBono.setText("Tipo de bono: "+bono);
             }
         });
@@ -96,6 +97,7 @@ public class info_user extends AppCompatActivity {
                 infoDNI.setText(dni);
                 infoDireccion.setText(direccion);
                 infoContraseña.setText(contraseña);
+                infoTelefono.setText(telefono);
                 infoBono.setText("Tipo de bono: "+bono);
             }
         });
