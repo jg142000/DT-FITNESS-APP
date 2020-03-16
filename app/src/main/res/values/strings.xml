@@ -52,4 +52,5 @@
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
     <string name="title_activity_lista_clientes">ListaClientes</string>
+    <string name="title_activity_info_user">info_user</string>
 </resources>

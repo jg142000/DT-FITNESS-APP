@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
@@ -37,12 +38,12 @@ public class AdminPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin_page);
+        setContentView(R.layout.activity_admin);
         setUpRecylerView();
     }
 
     private void setUpRecylerView() {
-        Query query = clienteReferencia.orderBy("nombre",Query.Direction.DESCENDING);
+        Query query = clienteReferencia.orderBy("nombre",Query.Direction.ASCENDING);
         FirestoreRecyclerOptions<Cliente> options = new FirestoreRecyclerOptions.Builder<Cliente>()
                 .setQuery(query,Cliente.class)
                 .build();
@@ -52,29 +53,29 @@ public class AdminPage extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
-    }
+        adapter.setOnItemClickListener(new Clientes_adapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(DocumentSnapshot documentSnapshot) {
+                startActivity(new Intent (AdminPage.this,info_user.class));
 
-    /*public void AdminPages() {
-        prueba.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if(documentSnapshot.exists()){
-                   String dani = documentSnapshot.getString("correo");
-                   texto_prueba.setText("El correo es" +dani);
-                }
-                else{
-                    Toast.makeText(AdminPage.this, "El documento no existe", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(AdminPage.this, "Error", Toast.LENGTH_SHORT).show();
-                Log.d(TAG,e.toString());
             }
         });
+
     }
-    */
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        adapter.startListening();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        adapter.startListening();
+    }
+
 
 
 }
