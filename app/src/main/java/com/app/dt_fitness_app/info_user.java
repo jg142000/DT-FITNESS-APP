@@ -1,5 +1,7 @@
 package com.app.dt_fitness_app;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -7,6 +9,10 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -16,13 +22,17 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import java.util.ArrayList;
 
 public class info_user extends AppCompatActivity {
 
@@ -35,8 +45,10 @@ public class info_user extends AppCompatActivity {
     private TextView infoTelefono;
     private TextView infoBono;
 
+
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference col = db.collection("Clientes");
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +60,33 @@ public class info_user extends AppCompatActivity {
         infoContraseña = findViewById(R.id.mi_info_contraseña);
         infoTelefono= findViewById(R.id.mi_info_telefono);
         infoBono = findViewById(R.id.mi_info_bono);
+        findViewById(R.id.edit_nombre).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showMyDialog("Introduzca su nuevo nombre", "nombre");
+            }
+        });
+
+        findViewById(R.id.edit_direccion).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showMyDialog("Introduzca la nueva dirección", "direccion");
+            }
+        });
+
+        findViewById(R.id.edit_contraseña).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showMyDialog("Introduzca la nueva contraseña", "contraseña");
+            }
+        });
+
+        findViewById(R.id.edit_correo).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showMyDialog("Introduzca el nuevo correo", "correo");
+            }
+        });
 
         if(IniciarSesion.imprimirUser(info_user.this).equals(("dtfitnessmadrid@gmail.com"))){
             showDataRoot();
@@ -98,15 +137,94 @@ public class info_user extends AppCompatActivity {
                 infoDireccion.setText(direccion);
                 infoContraseña.setText(contraseña);
                 infoTelefono.setText(telefono);
-                infoBono.setText("Tipo de bono: "+bono);
+                infoBono.setText(bono);
             }
         });
    }
 
-   // private String obtenerNombredB(String correo){
-
-   // }
 
 
+    private void showMyDialog(String main, final String field){
+        AlertDialog.Builder builder = new AlertDialog.Builder(info_user.this);
+
+        LayoutInflater inflater = getLayoutInflater();
+
+        View view = inflater.inflate(R.layout.edit_dialog_view, null);
+
+        builder.setView(view);
+
+        final AlertDialog dialog = builder.create();
+        dialog.show();
+
+        TextView titulo = view.findViewById(R.id.main_message);
+        titulo.setText(main);
+
+        final EditText newField = view.findViewById(R.id.new_field);
+
+        Button cancelar = view.findViewById(R.id.cancel);
+        cancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        
+        Button aplicar = view.findViewById(R.id.aplicar_cambios);
+        aplicar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    if(field.equals("contraseña")) {
+                        nuevaContraseña(newField.getText().toString());
+                    }
+                    if(field.equals("correo")){
+                        String nuevoEmail = newField.getText().toString();
+                        Cliente cliente = new Cliente(infoNombre.getText().toString(), infoContraseña.getText().toString(),
+                                infoTelefono.getText().toString(), infoDNI.getText().toString(),
+                                nuevoEmail, infoDireccion.getText().toString(), infoBono.getText().toString());
+                        db.collection("Clientes").document(nuevoEmail).set(cliente);
+                        db.collection("Clientes").document(infoCorreo.getText().toString()).delete();
+                        nuevoCorreo(newField.getText().toString());
+
+
+                    }
+                cambiarCampoDB(field, newField.getText().toString());
+                    if(field.equals("correo")){
+                        startActivity(new Intent(info_user.this, IniciarSesion.class));
+                        finish();
+                    } else {
+                        dialog.dismiss();
+                        try {
+                            Thread.sleep(95);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        finish();
+                        startActivity(getIntent());
+                    }
+            }
+        });
+    }
+
+
+    private void cambiarCampoDB(String field, String nuevoValor){
+        col.document(IniciarSesion.imprimirUser(info_user.this)).update(field, nuevoValor).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(info_user.this, "Dato actualizado correctamente", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void nuevaContraseña(String nuevaContraseña){
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        user.updatePassword(nuevaContraseña);
+    }
+
+    private void nuevoCorreo(String nuevoCorreo){
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        user.updateEmail(nuevoCorreo);
+    }
 
 }
