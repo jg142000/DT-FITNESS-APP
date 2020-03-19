@@ -12,18 +12,27 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.DocumentSnapshot;
 
+import java.util.ArrayList;
+
 public class Clientes_adapter extends FirestoreRecyclerAdapter<Cliente, Clientes_adapter.ClienteHolder> {
 
-    private OnItemClickListener listener;
 
-    public Clientes_adapter(@NonNull FirestoreRecyclerOptions<Cliente> options) {
+    private OnItemClickListener listener;
+    private static ArrayList<Cliente> lista_clientes;
+
+
+    public Clientes_adapter(@NonNull FirestoreRecyclerOptions<Cliente> options,ArrayList<Cliente> lista_clientes) {
+
         super(options);
+        this.lista_clientes = lista_clientes;
     }
 
     @Override
     protected void onBindViewHolder(@NonNull ClienteHolder holder, int position, @NonNull Cliente model) {
         holder.nombre_cliente.setText(model.getNombre());
+        lista_clientes.add(model);
     }
+
 
     @NonNull
     @Override
@@ -32,6 +41,7 @@ public class Clientes_adapter extends FirestoreRecyclerAdapter<Cliente, Clientes
                 parent,false);
         return new ClienteHolder(v);
     }
+
 
     class ClienteHolder extends RecyclerView.ViewHolder{
 
@@ -50,12 +60,24 @@ public class Clientes_adapter extends FirestoreRecyclerAdapter<Cliente, Clientes
             });
         }
     }
+
+
+
     public interface OnItemClickListener {
-        void onItemClick(DocumentSnapshot documentSnapshot);
+        void onItemClick(DocumentSnapshot posicion);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener){
         this.listener = listener;
     }
 
+    public static ArrayList<Cliente> getLista_clientes(){
+        return lista_clientes;
+    }
+
+   public void setFilter(ArrayList<Cliente> lista_clientes){
+        this.lista_clientes = new ArrayList<>();
+        lista_clientes.addAll(lista_clientes);
+        notifyDataSetChanged();
+    }
 }
