@@ -38,6 +38,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class AdminPage extends AppCompatActivity {
@@ -49,6 +50,7 @@ public class AdminPage extends AppCompatActivity {
     private static final String STRING_PREFERENCE =  "com.app.dt_fitness_app";
     private static final String CARD_USER = "user";  // Usuario al que accedemos
     private static String correo_card;
+    //private List<Cliente> lista_clientes = MainActivity.getListaClientes();
 
 
 
@@ -70,7 +72,7 @@ public class AdminPage extends AppCompatActivity {
         FirestoreRecyclerOptions<Cliente> options = new FirestoreRecyclerOptions.Builder<Cliente>()
                 .setQuery(query,Cliente.class)
                 .build();
-        adapter = new Clientes_adapter(options,Clientes_adapter.getLista_clientes());
+        adapter = new Clientes_adapter(options);
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -95,39 +97,21 @@ public class AdminPage extends AppCompatActivity {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.menu_dani,menu);
         MenuItem item = menu.findItem(R.id.action_buscador);
-        SearchView searchView = (SearchView) item.getActionView();
+       /* SearchView searchView = (SearchView) item.getActionView();
 
+       searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                try {
-                    ArrayList<Cliente> listaFiltrada = filter(Clientes_adapter.getLista_clientes(),newText);
-                    adapter.setFilter(listaFiltrada);
-                }
-                catch (Exception e){
-                  e.printStackTrace();
-                }
-                return false;
-            }
-        });
-       item.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
            @Override
-           public boolean onMenuItemActionExpand(MenuItem item) {
-               return true;
+           public boolean onQueryTextSubmit(String query) {
+               return false;
            }
 
            @Override
-           public boolean onMenuItemActionCollapse(MenuItem item) {
-               adapter.setFilter(Clientes_adapter.getLista_clientes());
-               return true;
+           public boolean onQueryTextChange(String newText) {
+               adapter.getFilter().filter(newText);
+               return false;
            }
-       });
+       });*/
 
         return true;
     }
@@ -150,23 +134,6 @@ public class AdminPage extends AppCompatActivity {
         }
     }
 
-    private ArrayList<Cliente> filter(ArrayList<Cliente> lista_clientes,String texto) {
-
-        ArrayList<Cliente> lisctaFiltrada = new ArrayList<>();
-        try {
-            texto = texto.toLowerCase();
-            for(Cliente c : adapter.getLista_clientes()){
-                String c2 = c.getNombre().toLowerCase();
-                if(c2.contains(texto)){
-                    lisctaFiltrada.add(c);
-                }
-            }
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-        return lisctaFiltrada;
-    }
 
 
 

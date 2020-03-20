@@ -2,6 +2,8 @@ package com.app.dt_fitness_app;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -44,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText editContraseña;
 
     private Button relogin;
+    //private static List<Cliente> listaClientes;
 
 
 
@@ -101,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
                     });
 
             registrarCliente_(correo, contraseña);
+            //listaClientes.add(cliente);
 
         }
         else if (alguno_vacío(nombre,contraseña,telefono,dni,correo,direccion,bono)) {
@@ -127,6 +131,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /*public static List<Cliente> getListaClientes(){
+        return listaClientes;
+    }*/
 
     private void registrarCliente_(String correo, String contraseña){
         fa.createUserWithEmailAndPassword(correo,contraseña).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
