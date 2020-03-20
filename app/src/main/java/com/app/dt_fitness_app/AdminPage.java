@@ -51,6 +51,7 @@ public class AdminPage extends AppCompatActivity {
     private static final String CARD_USER = "user";  // Usuario al que accedemos
     private static String correo_card;
     //private List<Cliente> lista_clientes = MainActivity.getListaClientes();
+    //
 
 
 
