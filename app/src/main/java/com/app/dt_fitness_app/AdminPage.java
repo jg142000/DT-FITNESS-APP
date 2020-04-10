@@ -47,15 +47,11 @@ public class AdminPage extends AppCompatActivity {
     private CollectionReference clienteReferencia = db.collection("Clientes");
     private Clientes_adapter adapter;
     private static final String TAG = "DocSnippets";
-    private static final String STRING_PREFERENCE =  "com.app.dt_fitness_app";
+    private static final String STRING_PREFERENCE = "com.app.dt_fitness_app";
     private static final String CARD_USER = "user";  // Usuario al que accedemos
     private static String correo_card;
-    //private List<Cliente> lista_clientes = MainActivity.getListaClientes();
+    private ArrayList<String> lista_clientes = new ArrayList<String>();
     //
-
-
-
-
 
 
     @Override
@@ -63,15 +59,27 @@ public class AdminPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
         setUpRecylerView();
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        //Toolbar toolbar = findViewById(R.id.toolbar);
+        // setSupportActionBar(toolbar);
+
+        clienteReferencia.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    for(QueryDocumentSnapshot document : task.getResult()){
+                        lista_clientes.add(document.get("nombre").toString());
+                    }
+                }
+            }
+        });
+
     }
 
 
     private void setUpRecylerView() {
-        Query query = clienteReferencia.orderBy("nombre",Query.Direction.DESCENDING);
+        Query query = clienteReferencia.orderBy("nombre", Query.Direction.DESCENDING);
         FirestoreRecyclerOptions<Cliente> options = new FirestoreRecyclerOptions.Builder<Cliente>()
-                .setQuery(query,Cliente.class)
+                .setQuery(query, Cliente.class)
                 .build();
         adapter = new Clientes_adapter(options);
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
@@ -84,20 +92,21 @@ public class AdminPage extends AppCompatActivity {
             public void onItemClick(DocumentSnapshot documentSnapshot) {
 
                 SharedPreferences preferences = getSharedPreferences(STRING_PREFERENCE, MODE_PRIVATE);
-                preferences.edit().putString(CARD_USER,documentSnapshot.getString("correo")).apply();
+                preferences.edit().putString(CARD_USER, documentSnapshot.getString("correo")).apply();
                 correo_card = documentSnapshot.getString("correo");
-                startActivity(new Intent (AdminPage.this,info_user.class));
+                startActivity(new Intent(AdminPage.this, info_user.class));
 
             }
         });
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.menu_dani,menu);
-        MenuItem item = menu.findItem(R.id.action_buscador);
+
+   // @Override
+  //  public boolean onCreateOptionsMenu(Menu menu) {
+   //    MenuInflater menuInflater = getMenuInflater();
+    //    menuInflater.inflate(R.menu.menu_dani,menu);
+    //    MenuItem item = menu.findItem(R.id.action_buscador);
        /* SearchView searchView = (SearchView) item.getActionView();
 
        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
@@ -114,11 +123,11 @@ public class AdminPage extends AppCompatActivity {
            }
        });*/
 
-        return true;
-    }
+ //       return true;
+  //  }
 
 
-
+/*
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int res_id = item.getItemId();
@@ -138,7 +147,7 @@ public class AdminPage extends AppCompatActivity {
 
 
 
-
+*/
     @Override
     protected void onStart() {
         super.onStart();
@@ -156,7 +165,6 @@ public class AdminPage extends AppCompatActivity {
         SharedPreferences preferences = c.getSharedPreferences(STRING_PREFERENCE, MODE_PRIVATE);
         return preferences.getString(CARD_USER, correo_card);
     }
-
 
 
 
