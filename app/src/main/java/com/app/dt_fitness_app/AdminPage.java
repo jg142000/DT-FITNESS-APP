@@ -53,8 +53,7 @@ public class AdminPage extends AppCompatActivity {
     private static final String STRING_PREFERENCE = "com.app.dt_fitness_app";
     private static final String CARD_USER = "user";  // Usuario al que accedemos
     private static String correo_card;
-    private ArrayList<String> lista_clientes = new ArrayList<String>();
-    private List<String> exampleListFull;
+    private List<String> milista;
     //
 
 
@@ -62,30 +61,35 @@ public class AdminPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
+        fillLista();
         setUpRecylerView();
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
+
+    }
+
+    private void fillLista(){
+        milista = new ArrayList<>();
         clienteReferencia.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(task.isSuccessful()){
                     for(QueryDocumentSnapshot document : task.getResult()){
-                        lista_clientes.add(document.get("nombre").toString());
+                        milista.add(document.get("nombre").toString());
                     }
                 }
             }
         });
-
     }
-
 
     private void setUpRecylerView() {
         Query query = clienteReferencia.orderBy("nombre", Query.Direction.DESCENDING);
         FirestoreRecyclerOptions<Cliente> options = new FirestoreRecyclerOptions.Builder<Cliente>()
                 .setQuery(query, Cliente.class)
                 .build();
-        adapter = new Clientes_adapter(options);
+        adapter = new Clientes_adapter(options,milista);
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -120,7 +124,7 @@ public class AdminPage extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                getFilter().filter(newText);
+                adapter.getFilter().filter(newText);
                 return false;
             }
         });
@@ -128,45 +132,7 @@ public class AdminPage extends AppCompatActivity {
     }
 
 
-    public int getItemCount() {
-        return lista_clientes.size();
-    }
 
-
-    public Filter getFilter() {
-        return filtro;
-    }
-
-    private Filter filtro = new Filter() {
-        @Override
-        protected FilterResults performFiltering(CharSequence constraint) {
-            List<String> filteredList = new ArrayList<>();
-
-            if (constraint == null || constraint.length() == 0) {
-                filteredList.addAll(exampleListFull);
-            } else {
-                String filterPattern = constraint.toString().toLowerCase().trim();
-
-                for (String item : exampleListFull) {
-                    if (item.toLowerCase().contains(filterPattern)) {
-                        filteredList.add(item);
-                    }
-                }
-            }
-
-            FilterResults results = new FilterResults();
-            results.values = filteredList;
-
-            return results;
-        }
-
-        @Override
-        protected void publishResults(CharSequence constraint, FilterResults results) {
-            lista_clientes.clear();
-            lista_clientes.addAll((List) results.values);
-            adapter.notifyDataSetChanged();
-        }
-    };
 
 
         @Override

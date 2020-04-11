@@ -3,6 +3,7 @@ package com.app.dt_fitness_app;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filterable;
 import android.widget.TextView;
 import android.widget.Filter;
 
@@ -17,71 +18,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Clientes_adapter extends FirestoreRecyclerAdapter<Cliente, Clientes_adapter.ClienteHolder> {
-    //private List<Cliente> lista_clientes;
-   // private List<Cliente> lista_clientesFull;
+public class Clientes_adapter extends FirestoreRecyclerAdapter<Cliente, Clientes_adapter.ClienteHolder> implements Filterable {
+    private List<String> lista_clientes;
+    private List<String> lista_clientesFull;
 
     private OnItemClickListener listener;
 
 
-
-    public Clientes_adapter(@NonNull FirestoreRecyclerOptions<Cliente> options) {
-        super(options);
-        //this.lista_clientes = lista_clientes;
-        //lista_clientesFull = new ArrayList<>(lista_clientes);
-    }
-
-    @Override
-    protected void onBindViewHolder(@NonNull ClienteHolder holder, int position, @NonNull Cliente model) {
-        holder.nombre_cliente.setText(model.getNombre());
-
-    }
-
-
-    @NonNull
-    @Override
-    public ClienteHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.cliente_item,
-                parent,false);
-        return new ClienteHolder(v);
-    }
-
-    /*public int getItemCount(){
-        return lista_clientes.size();
-    }
-    public Filter getFilter() {
-        return exampleFilter;
-    }
-
-    private Filter exampleFilter = new Filter() {
-
-        @Override
-        protected FilterResults performFiltering(CharSequence constraint) {
-            List<Cliente> filteredList = new ArrayList<>();
-            if(constraint == null || constraint.length() == 0){
-                filteredList.addAll(lista_clientesFull);
-            }
-            else {
-                String filterPattern = constraint.toString().toLowerCase().trim();
-                for(Cliente cliente : lista_clientesFull){
-                    if(cliente.getNombre().toLowerCase().contains(filterPattern)){
-                        filteredList.add(cliente);
-                    }
-                }
-            }
-            FilterResults results = new FilterResults();
-            results.values = filteredList;
-            return results;
-        }
-
-        @Override
-        protected void publishResults(CharSequence constraint, FilterResults results) {
-            lista_clientes.clear();
-            lista_clientes.addAll((List)results.values);
-            notifyDataSetChanged();
-        }
-    };
-*/
     class ClienteHolder extends RecyclerView.ViewHolder{
 
         TextView nombre_cliente;
@@ -98,7 +41,69 @@ public class Clientes_adapter extends FirestoreRecyclerAdapter<Cliente, Clientes
                 }
             });
         }
+
+
     }
+     Clientes_adapter(@NonNull FirestoreRecyclerOptions<Cliente> options, List<String> clientes) {
+        super(options);
+        this.lista_clientes = clientes;
+        lista_clientesFull = new ArrayList<>(lista_clientes);
+    }
+
+    @Override
+    protected void onBindViewHolder(@NonNull ClienteHolder holder, int position, @NonNull Cliente model) {
+        holder.nombre_cliente.setText(model.getNombre());
+
+    }
+
+
+    @NonNull
+    @Override
+    public ClienteHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.cliente_item,
+                parent,false);
+        return new ClienteHolder(v);
+    }
+    public int getItemCount() {
+        return lista_clientes.size();
+    }
+
+
+    public Filter getFilter() {
+        return filtro;
+    }
+
+    private Filter filtro = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<String> filteredList = new ArrayList<>();
+
+            if (constraint == null || constraint.length() == 0) {
+                filteredList.addAll(lista_clientesFull);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+
+                for (String item : lista_clientesFull) {
+                    if (item.toLowerCase().contains(filterPattern)) {
+                        filteredList.add(item);
+                    }
+                }
+            }
+
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            lista_clientes.clear();
+            lista_clientes.addAll((List) results.values);
+            notifyDataSetChanged();
+        }
+    };
+
 
 
 
@@ -111,11 +116,4 @@ public class Clientes_adapter extends FirestoreRecyclerAdapter<Cliente, Clientes
         this.listener = listener;
     }
 
-
-
-   /*public void setFilter(ArrayList<Cliente> lista_clientes){
-        this.lista_clientes = new ArrayList<>();
-        lista_clientes.addAll(lista_clientes);
-        notifyDataSetChanged();
-    }*/
 }
