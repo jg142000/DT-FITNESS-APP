@@ -17,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Filter;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +38,8 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,6 +54,7 @@ public class AdminPage extends AppCompatActivity {
     private static final String CARD_USER = "user";  // Usuario al que accedemos
     private static String correo_card;
     private ArrayList<String> lista_clientes = new ArrayList<String>();
+    private List<String> exampleListFull;
     //
 
 
@@ -59,8 +63,8 @@ public class AdminPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
         setUpRecylerView();
-        //Toolbar toolbar = findViewById(R.id.toolbar);
-        // setSupportActionBar(toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         clienteReferencia.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -102,52 +106,89 @@ public class AdminPage extends AppCompatActivity {
     }
 
 
-   // @Override
-  //  public boolean onCreateOptionsMenu(Menu menu) {
-   //    MenuInflater menuInflater = getMenuInflater();
-    //    menuInflater.inflate(R.menu.menu_dani,menu);
-    //    MenuItem item = menu.findItem(R.id.action_buscador);
-       /* SearchView searchView = (SearchView) item.getActionView();
-
-       searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
-       searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-           @Override
-           public boolean onQueryTextSubmit(String query) {
-               return false;
-           }
-
-           @Override
-           public boolean onQueryTextChange(String newText) {
-               adapter.getFilter().filter(newText);
-               return false;
-           }
-       });*/
-
- //       return true;
-  //  }
-
-
-/*
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int res_id = item.getItemId();
-        switch (res_id) {
-            case R.id.action_settings:
-                startActivity(new Intent(AdminPage.this,CerrarSesion.class));
-                return true;
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu_dani,menu);
+        MenuItem item = menu.findItem(R.id.action_buscador);
+        SearchView searchView = (SearchView) item.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
 
-            case R.id.action_buscador:
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                getFilter().filter(newText);
+                return false;
+            }
+        });
+        return true;
     }
 
 
+    public int getItemCount() {
+        return lista_clientes.size();
+    }
 
 
-*/
+    public Filter getFilter() {
+        return filtro;
+    }
+
+    private Filter filtro = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<String> filteredList = new ArrayList<>();
+
+            if (constraint == null || constraint.length() == 0) {
+                filteredList.addAll(exampleListFull);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+
+                for (String item : exampleListFull) {
+                    if (item.toLowerCase().contains(filterPattern)) {
+                        filteredList.add(item);
+                    }
+                }
+            }
+
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            lista_clientes.clear();
+            lista_clientes.addAll((List) results.values);
+            adapter.notifyDataSetChanged();
+        }
+    };
+
+
+        @Override
+        public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+            int res_id = item.getItemId();
+            switch (res_id) {
+                case R.id.action_settings:
+                    startActivity(new Intent(AdminPage.this,CerrarSesion.class));
+                    return true;
+
+                case R.id.action_buscador:
+                    return true;
+
+                default:
+                    return super.onOptionsItemSelected(item);
+            }
+        }
+
+
+
+
+
     @Override
     protected void onStart() {
         super.onStart();
