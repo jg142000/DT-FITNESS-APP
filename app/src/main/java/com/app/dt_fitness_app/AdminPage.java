@@ -7,10 +7,12 @@ import androidx.core.view.MenuItemCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -44,7 +46,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AdminPage extends AppCompatActivity {
+public class AdminPage extends AppCompatActivity  {
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference clienteReferencia = db.collection("Clientes");
@@ -78,6 +80,7 @@ public class AdminPage extends AppCompatActivity {
                 if(task.isSuccessful()){
                     for(QueryDocumentSnapshot document : task.getResult()){
                         milista.add(document.get("nombre").toString());
+                        adapter.notifyDataSetChanged();
                     }
                 }
             }
@@ -124,7 +127,11 @@ public class AdminPage extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                adapter.getFilter().filter(newText);
+                if (TextUtils.isEmpty ( newText ) ) {
+                    adapter.getFilter().filter("");
+                } else {
+                    adapter.getFilter().filter(newText);
+                }
                 return false;
             }
         });
@@ -135,26 +142,21 @@ public class AdminPage extends AppCompatActivity {
 
 
 
-        @Override
-        public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-            int res_id = item.getItemId();
-            switch (res_id) {
-                case R.id.action_settings:
-                    startActivity(new Intent(AdminPage.this,CerrarSesion.class));
-                    return true;
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int res_id = item.getItemId();
+        switch (res_id) {
+            case R.id.action_settings:
+                startActivity(new Intent(AdminPage.this,CerrarSesion.class));
+                return true;
 
-                case R.id.action_buscador:
-                    return true;
+            case R.id.action_buscador:
+                return true;
 
-                default:
-                    return super.onOptionsItemSelected(item);
-            }
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-
-
-
-
+    }
     @Override
     protected void onStart() {
         super.onStart();
@@ -172,8 +174,6 @@ public class AdminPage extends AppCompatActivity {
         SharedPreferences preferences = c.getSharedPreferences(STRING_PREFERENCE, MODE_PRIVATE);
         return preferences.getString(CARD_USER, correo_card);
     }
-
-
 
 
 }

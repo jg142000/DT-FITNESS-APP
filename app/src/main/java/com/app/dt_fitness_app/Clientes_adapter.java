@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.Filterable;
 import android.widget.TextView;
 import android.widget.Filter;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,10 +21,9 @@ import java.util.List;
 
 public class Clientes_adapter extends FirestoreRecyclerAdapter<Cliente, Clientes_adapter.ClienteHolder> implements Filterable {
     private List<String> lista_clientes;
-    private List<String> lista_clientesFull;
 
     private OnItemClickListener listener;
-
+    private List<String> lista_clientesFull;
 
     class ClienteHolder extends RecyclerView.ViewHolder{
 
@@ -44,10 +44,9 @@ public class Clientes_adapter extends FirestoreRecyclerAdapter<Cliente, Clientes
 
 
     }
-     Clientes_adapter(@NonNull FirestoreRecyclerOptions<Cliente> options, List<String> clientes) {
+    Clientes_adapter(@NonNull FirestoreRecyclerOptions<Cliente> options, List<String> lista_clientes) {
         super(options);
-        this.lista_clientes = clientes;
-        lista_clientesFull = new ArrayList<>(lista_clientes);
+        this.lista_clientes = lista_clientes;
     }
 
     @Override
@@ -70,38 +69,32 @@ public class Clientes_adapter extends FirestoreRecyclerAdapter<Cliente, Clientes
 
 
     public Filter getFilter() {
-        return filtro;
-    }
-
-    private Filter filtro = new Filter() {
-        @Override
-        protected FilterResults performFiltering(CharSequence constraint) {
-            List<String> filteredList = new ArrayList<>();
-
-            if (constraint == null || constraint.length() == 0) {
-                filteredList.addAll(lista_clientesFull);
-            } else {
-                String filterPattern = constraint.toString().toLowerCase().trim();
-
-                for (String item : lista_clientesFull) {
-                    if (item.toLowerCase().contains(filterPattern)) {
-                        filteredList.add(item);
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                final FilterResults oReturn = new FilterResults();
+                final List<String> results = new ArrayList<>();
+                if (lista_clientesFull == null)
+                    lista_clientesFull  = lista_clientes;
+                if (constraint != null){
+                    if(lista_clientesFull !=null & lista_clientesFull.size()>0 ){
+                        for ( final String g :lista_clientesFull) {
+                            if (g.toLowerCase().contains(constraint.toString()))results.add(g);
+                        }
                     }
+                    oReturn.values = results;
                 }
+                return oReturn;
             }
 
-            FilterResults results = new FilterResults();
-            results.values = filteredList;
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
 
-            return results;
-        }
+                lista_clientes = (ArrayList<String>)results.values;
+                notifyDataSetChanged();
 
-        @Override
-        protected void publishResults(CharSequence constraint, FilterResults results) {
-            lista_clientes.clear();
-            lista_clientes.addAll((List) results.values);
-            notifyDataSetChanged();
-        }
+            }
+        };
     };
 
 
