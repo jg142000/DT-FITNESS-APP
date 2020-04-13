@@ -95,7 +95,7 @@ public class AdminPage extends AppCompatActivity  {
     }
 
     private void setUpRecylerView() {
-        Query query = clienteReferencia.orderBy("nombre", Query.Direction.DESCENDING);
+        Query query = clienteReferencia.orderBy("nombre", Query.Direction.ASCENDING);
         FirestoreRecyclerOptions<Cliente> options = new FirestoreRecyclerOptions.Builder<Cliente>()
                 .setQuery(query, Cliente.class)
                 .build();
