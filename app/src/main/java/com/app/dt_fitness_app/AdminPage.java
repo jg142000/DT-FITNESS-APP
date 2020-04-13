@@ -126,6 +126,7 @@ public class AdminPage extends AppCompatActivity  {
         menuInflater.inflate(R.menu.menu_dani,menu);
         MenuItem item = menu.findItem(R.id.action_buscador);
         SearchView searchView = (SearchView) item.getActionView();
+        searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
