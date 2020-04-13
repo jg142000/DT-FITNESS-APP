@@ -55,7 +55,7 @@ public class AdminPage extends AppCompatActivity  {
     private static final String STRING_PREFERENCE = "com.app.dt_fitness_app";
     private static final String CARD_USER = "user";  // Usuario al que accedemos
     private static String correo_card;
-    private List<String> milista;
+    private List<Cliente> milista;
     //
 
 
@@ -69,7 +69,6 @@ public class AdminPage extends AppCompatActivity  {
         setSupportActionBar(toolbar);
 
 
-
     }
 
     private void fillLista(){
@@ -79,7 +78,15 @@ public class AdminPage extends AppCompatActivity  {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(task.isSuccessful()){
                     for(QueryDocumentSnapshot document : task.getResult()){
-                        milista.add(document.get("nombre").toString());
+                        String nombre = document.get("nombre").toString();
+                        String contraseña = document.get("contraseña").toString();
+                        String telefono = document.get("telefono").toString();
+                        String dni = document.get("dni").toString();
+                        String correo = document.get("correo").toString();
+                        String direccion = document.get("direccion").toString();
+                        String bono = document.get("bono").toString();
+                        Cliente c = new Cliente(nombre,contraseña,telefono,dni,correo,direccion,bono);
+                        milista.add(c);
                         adapter.notifyDataSetChanged();
                     }
                 }

@@ -20,10 +20,10 @@ import java.util.List;
 
 
 public class Clientes_adapter extends FirestoreRecyclerAdapter<Cliente, Clientes_adapter.ClienteHolder> implements Filterable {
-    private List<String> lista_clientes;
+    private List<Cliente> lista_clientes;
 
     private OnItemClickListener listener;
-    private List<String> lista_clientesFull;
+    private static List<Cliente> lista_clientesFull;
 
     class ClienteHolder extends RecyclerView.ViewHolder{
 
@@ -44,14 +44,15 @@ public class Clientes_adapter extends FirestoreRecyclerAdapter<Cliente, Clientes
 
 
     }
-    Clientes_adapter(@NonNull FirestoreRecyclerOptions<Cliente> options, List<String> lista_clientes) {
+    Clientes_adapter(@NonNull FirestoreRecyclerOptions<Cliente> options, List<Cliente> lista_clientes) {
         super(options);
         this.lista_clientes = lista_clientes;
     }
 
     @Override
     protected void onBindViewHolder(@NonNull ClienteHolder holder, int position, @NonNull Cliente model) {
-        holder.nombre_cliente.setText(model.getNombre());
+        Cliente c = lista_clientes.get(position);
+        holder.nombre_cliente.setText(c.getNombre());
 
     }
 
@@ -73,13 +74,13 @@ public class Clientes_adapter extends FirestoreRecyclerAdapter<Cliente, Clientes
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 final FilterResults oReturn = new FilterResults();
-                final List<String> results = new ArrayList<>();
+                final List<Cliente> results = new ArrayList<>();
                 if (lista_clientesFull == null)
                     lista_clientesFull  = lista_clientes;
                 if (constraint != null){
                     if(lista_clientesFull !=null & lista_clientesFull.size()>0 ){
-                        for ( final String g :lista_clientesFull) {
-                            if (g.toLowerCase().contains(constraint.toString()))results.add(g);
+                        for ( Cliente c : lista_clientesFull) {
+                            if (c.getNombre().toLowerCase().contains(constraint.toString()))results.add(c);
                         }
                     }
                     oReturn.values = results;
@@ -90,12 +91,14 @@ public class Clientes_adapter extends FirestoreRecyclerAdapter<Cliente, Clientes
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
 
-                lista_clientes = (ArrayList<String>)results.values;
+                lista_clientes = (List<Cliente>)results.values;
                 notifyDataSetChanged();
 
             }
         };
     };
+
+
 
 
 
