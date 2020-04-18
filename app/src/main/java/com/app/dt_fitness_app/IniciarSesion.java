@@ -47,11 +47,13 @@ public class IniciarSesion extends AppCompatActivity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        if(obtenerEstadomanSesion() && obtenerUsuario()!=null && !obtenerUsuario().equals(correoAdmin)){ //falta guardar si dani esta iniciado sesion para ir a su pantalla
+        if(obtenerEstadomanSesion() && obtenerUsuario()!=null && !obtenerUsuario().equals(correoAdmin)){
             startActivity(new Intent(IniciarSesion.this,CerrarSesion.class));
             finish();
-        } else if(obtenerEstadomanSesion() && obtenerUsuario().equals(correoAdmin)){
-            startActivity(new Intent(IniciarSesion.this,AdminPage.class));
+        } else if(obtenerEstadomanSesion() && fa.getCurrentUser().getEmail().equals(correoAdmin)){
+            Intent intent = new Intent(IniciarSesion.this,AdminPage.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
             finish();
         }
         super.onCreate(savedInstanceState);

@@ -22,6 +22,7 @@ public class CerrarSesion extends AppCompatActivity {
     private Button cerrarSesion;
     private FirebaseAuth fa;
     private AdView mAdView;
+    private Button refrescar;
 
 
     @Override
@@ -30,6 +31,7 @@ public class CerrarSesion extends AppCompatActivity {
         setContentView(R.layout.activity_cerrar_sesion);
         cerrarSesion = findViewById(R.id.cerrarsesion);
         mosUser = findViewById(R.id.mostrarUserBT);
+        refrescar = findViewById(R.id.refrescar);
         fa = FirebaseAuth.getInstance();
         cerrarSesion.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,5 +57,13 @@ public class CerrarSesion extends AppCompatActivity {
         mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
+
+        refrescar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(CerrarSesion.this, AdminPage.class));
+            }
+        });
+
     }
 }

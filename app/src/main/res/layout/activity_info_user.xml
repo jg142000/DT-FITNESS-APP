@@ -93,7 +93,6 @@
         android:layout_alignRight="@id/mi_info_nombre"
          android:drawableBottom="@android:drawable/ic_menu_edit"
          android:backgroundTint="#FFFFFF"
-         android:onClick="cambiarNombre"
 
         />
 

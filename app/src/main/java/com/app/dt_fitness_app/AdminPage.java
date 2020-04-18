@@ -39,7 +39,10 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -63,7 +66,7 @@ public class AdminPage extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin);
-        fillLista();
+        fillListaOrdenada();
         setUpRecylerView();
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -71,27 +74,28 @@ public class AdminPage extends AppCompatActivity  {
 
     }
 
-    private void fillLista(){
+    private void fillListaOrdenada(){
         milista = new ArrayList<>();
-        clienteReferencia.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        clienteReferencia.orderBy("nombre", Query.Direction.ASCENDING).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(task.isSuccessful()){
-                    for(QueryDocumentSnapshot document : task.getResult()){
-                        String nombre = document.get("nombre").toString();
-                        String contraseña = document.get("contraseña").toString();
-                        String telefono = document.get("telefono").toString();
-                        String dni = document.get("dni").toString();
-                        String correo = document.get("correo").toString();
-                        String direccion = document.get("direccion").toString();
-                        String bono = document.get("bono").toString();
-                        Cliente c = new Cliente(nombre,contraseña,telefono,dni,correo,direccion,bono);
-                        milista.add(c);
-                        adapter.notifyDataSetChanged();
-                    }
+                   for(QueryDocumentSnapshot document : task.getResult()){
+                       String nombre = document.get("nombre").toString();
+                       String contraseña = document.get("contraseña").toString();
+                       String telefono = document.get("telefono").toString();
+                       String dni = document.get("dni").toString();
+                       String correo = document.get("correo").toString();
+                       String direccion = document.get("direccion").toString();
+                       String bono = document.get("bono").toString();
+                       Cliente c = new Cliente(nombre,contraseña,telefono,dni,correo,direccion,bono);
+                       milista.add(c);
+                   }
                 }
             }
         });
+
+
     }
 
     private void setUpRecylerView() {

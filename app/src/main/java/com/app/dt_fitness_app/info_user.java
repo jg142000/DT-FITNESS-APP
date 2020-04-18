@@ -33,6 +33,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class info_user extends AppCompatActivity {
 
@@ -48,6 +51,7 @@ public class info_user extends AppCompatActivity {
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CollectionReference col = db.collection("Clientes");
+    private String firebaseAuth = FirebaseAuth.getInstance().getCurrentUser().getEmail();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,13 +181,27 @@ public class info_user extends AppCompatActivity {
                         nuevaContraseña(newField.getText().toString());
                     }
                     if(field.equals("correo")){
-                        String nuevoEmail = newField.getText().toString();
-                        Cliente cliente = new Cliente(infoNombre.getText().toString(), infoContraseña.getText().toString(),
-                                infoTelefono.getText().toString(), infoDNI.getText().toString(),
-                                nuevoEmail, infoDireccion.getText().toString(), infoBono.getText().toString());
-                        db.collection("Clientes").document(nuevoEmail).set(cliente);
-                        db.collection("Clientes").document(infoCorreo.getText().toString()).delete();
-                        nuevoCorreo(newField.getText().toString());
+                        db.collection("Clientes").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if(task.isSuccessful()){
+                                    for(QueryDocumentSnapshot document : task.getResult()){
+                                        String nombre = document.get("nombre").toString();
+                                        String contraseña = document.get("contraseña").toString();
+                                        String telefono = document.get("telefono").toString();
+                                        String dni = document.get("dni").toString();
+                                        String correo = infoContraseña.getText().toString();
+                                        String direccion = document.get("direccion").toString();
+                                        String bono = document.get("bono").toString();
+                                        Cliente c = new Cliente(nombre,contraseña,telefono,dni,correo,direccion,bono);
+                                        db.collection("Clientes").document(infoCorreo.getText().toString()).set(c);
+                                        nuevoCorreo(newField.getText().toString());
+
+                                    }
+                                }
+                            }
+                        });
+
 
 
                     }
@@ -198,8 +216,13 @@ public class info_user extends AppCompatActivity {
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
+                        if(firebaseAuth.equals("dtfitnessmadrid@gmail.com")){
+                            finish();
+                            startActivity(new Intent(info_user.this, AdminPage.class));
+                        }
+                        Intent intent = getIntent();
                         finish();
-                        startActivity(getIntent());
+                        startActivity(intent);
                     }
             }
         });
@@ -226,5 +249,6 @@ public class info_user extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         user.updateEmail(nuevoCorreo);
     }
+
 
 }
